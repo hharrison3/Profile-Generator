@@ -10,7 +10,142 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+const employeeArray = [];
 
+//we want to create an array of Employee objects
+//pass employee in a render function and write to a file in output folder
+
+const manager_questions = [
+    {
+        type: "input",
+        name: "name",
+        message: "What is your name?"
+    }, 
+    {
+        type: "input",
+        name: "id",
+        message: "What is your id?"
+    },
+    {
+        type: "input",
+        name: "email",
+        message: "What is your email?"
+    },
+    {
+        type: "input",
+        name: "officeNumber",
+        message: "What is your office number?"
+    }
+];
+
+const engineer_questions = [
+    {
+        type: "input",
+        name: "name",
+        message: "What is your name?"
+    }, 
+    {
+        type: "input",
+        name: "id",
+        message: "What is your id?"
+    },
+    {
+        type: "input",
+        name: "email",
+        message: "What is your email?"
+    },
+    {
+        type: "input",
+        name: "github",
+        message: "What is your github username?"
+    }
+];
+
+const intern_questions = [
+    {
+        type: "input",
+        name: "name",
+        message: "What is your name?"
+    }, 
+    {
+        type: "input",
+        name: "id",
+        message: "What is your id?"
+    },
+    {
+        type: "input",
+        name: "email",
+        message: "What is your email?"
+    },
+    {
+        type: "input",
+        name: "school",
+        message: "What school are you attending/gratuated from?"
+    }
+];
+
+const createTeam = () => {
+    inquirer.prompt([
+        {
+        type: "list",
+        name: 'memberChoice',
+        message: 'What type of member would you like to add?',
+        choices: ["Manager", "Engineer", "Intern", "My team is complete"]
+        }
+    ]).then(answers => {
+        switch (answers.memberChoice) {
+            case 'Manager':
+                createManager();
+                break;
+            case 'Engineer':
+                createEngineer();
+                break;
+            case 'Intern':
+                createIntern();
+                break;        
+            default:
+                renderTeam();
+                break;
+        }
+    });
+};
+
+const app =  () => {
+    createManager();
+}
+
+app();
+function createManager() {
+    inquirer.prompt(manager_questions).then(answers => {
+        const newManager = new Manager(answers.name, answers.id, answers.email, answers.officeNumber);
+        employeeArray.push(newManager);
+        createTeam();
+    });
+}
+function createEngineer() {
+    inquirer.prompt(engineer_questions).then(answers => {
+        const newEngineer = new Engineer(answers.name, answers.id, answers.email, answers.github);
+        employeeArray.push(newEngineer);
+        createTeam();
+    });
+}
+function createIntern() {
+    inquirer.prompt(intern_questions).then(answers => {
+        const newIntern = new Intern(answers.name, answers.id, answers.email, answers.school);
+        employeeArray.push(newIntern);
+        createTeam();
+    });
+}
+function renderTeam() {
+    // check if team.html exists
+    //true = do not create it
+    //false = create it
+    if (!fs.existsSync(OUTPUT_DIR)) {
+        fs.mkdirSync(OUTPUT_DIR);
+    };
+
+    fs.writeFileSync(outputPath, render(employeeArray), "utf8");
+}
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
