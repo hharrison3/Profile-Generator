@@ -1,7 +1,7 @@
 # Project Title: 
 Profile Generator 
 # Project Description: 
-The goal of this project is to create a command line application that generates an HTML file that displays a nicely formatted team roster based on the information provided by the user.
+The goal of this project is to create a command line application that generates an HTML file that displays a nicely formatted team roster based on the information provided by the user. Demo Gifs of the working application can be found in the Assets folder.
 # Table of Contents
 * Installation
 * Usage
